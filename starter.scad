@@ -1,9 +1,9 @@
 // Toolkit that performs all the model generation operations
-include <boardgame_insert_toolkit_lib.2.scad>;
+include <boardgame_insert_toolkit_lib.3.scad>;
 
 // Helper library to simplify creation of single components
 // Also includes some basic lid helpers
-include <bit_functions_lib.scad>;
+include <bit_functions_lib.3.scad>;
 
 // Determines whether lids are output.
 g_b_print_lid = true;
@@ -41,14 +41,28 @@ g_tolerance = 0.15;
 // The larger the value, the bigger the gap between the lid and the box.
 g_tolerance_detents_pos = 0.1;
 
+
+// This determines whether the default single material version is output, or, if printing in multiple materials, 
+// which layer to output.
+g_print_mmu_layer = "default"; // [ "default" | "mmu_box_layer" | "mmu_label_layer" ]
+
+////////////////////////////////////////////////////////////////////////////////
+// Global variables used in bit_functions_lib.3.scad
+////////////////////////////////////////////////////////////////////////////////
+
 // This sets the default font for any labels. 
 // See https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Text#Using_Fonts_&_Styles
 // for details on picking a new font.
 g_default_font = "Liberation Sans:style=Regular";
 
-// This determines whether the default single material version is output, or, if printing in multiple materials, 
-// which layer to output.
-g_print_mmu_layer = "default"; // [ "default" | "mmu_box_layer" | "mmu_label_layer" ]
+// This sets the default fillet radius for components defined with cmp_parms_fillet
+g_default_fillet_radius = 5;
+
+// These variables define the stripe pattern behind lid labels
+// Stripe width:
+g_default_swidth = 1.0;
+// Stripe spacing:
+g_default_sspace = 1.5;
 
 ////////////////////////////////////////////////////////////////////////////////
 // User data for box creation
@@ -67,13 +81,13 @@ cmp_dx = box_urx - 2*wall;
 cmp_dy = box_ury - 2*wall;
 cmp_dz = box_urz - 1*wall;
 
-// Variables for Box1
+// Variables for HexBox1
 // Note that box_urz subtracts out 2*wall to have a final height of 20mm with an inset lid
 // Hexbox sizing is determined by the inner diameter (i.e., measure across a Tile you want to fit inside)
 hexbox_d = 100;
 hexbox_urz = 20 - 2*wall;
 
-// This math defines the size of a single square component that fills the box
+// This math defines the size of a single hexagonal component that fills the box
 hexcmp_d = hexbox_d;
 hexcmp_dz = hexbox_urz - 1*wall;
 

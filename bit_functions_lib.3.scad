@@ -2,14 +2,16 @@
 // Inputs:
 // (dx, dy, dz): Size of the component
 // (llx, lly):   Optional parameter - Location of lower left corner - defaults to (0, 0)
+// cutout:       Optional parameter - Cutout bottom of compartment - defaults to f
 // lbl:          Optional parameter - Text to include on the bottom - defaults to blank
 // font:         Optional parameter - OpensSCAD font specifier - defaults to g_default_font
 // size:         Optional parameter - Size of label - defaults to AuTO
-function cmp_parms( dx, dy, dz, llx=0, lly=0, lbl="", font=g_default_font, size="AUTO" ) =
+function cmp_parms( dx, dy, dz, llx=0, lly=0, cutout=f, lbl="", font=g_default_font, size="AUTO" ) =
 [
     [CMP_NUM_COMPARTMENTS_XY,   [ 1, 1 ] ],
     [CMP_COMPARTMENT_SIZE_XYZ,  [ dx, dy, dz ] ],
     [POSITION_XY,  [ llx, lly ] ],
+    [CMP_CUTOUT_BOTTOM_B, cutout],
     [LABEL, 
     [
         [LBL_TEXT, lbl],
@@ -25,13 +27,13 @@ function cmp_parms( dx, dy, dz, llx=0, lly=0, lbl="", font=g_default_font, size=
 // Inputs:
 // (dx, dy, dz): Size of the component
 // (llx, lly):   Optional parameter - Location of lower left corner - defaults to (0, 0)
-// radius:       Optional parameter - Radius of the fillet - defaults to 5
+// radius:       Optional parameter - Radius of the fillet - defaults to g_default_fillet_radius
 // rot:          Optional parameter - Is component rotated around Z axis - defaults to t. Valid values: t, f
 // vert:         Optional parameter - Is component for vertical stack of pieces - defaults to f. Valid values: t, f
 // lbl:          Optional parameter - Text to include on the bottom - defaults to blank
 // font:         Optional parameter - OpensSCAD font specifier - defaults to g_default_font
 // size:         Optional parameter - Size of label - defaults to AuTO
-function cmp_parms_fillet( dx, dy, dz, llx=0, lly=0, radius=5, rot=t, vert=f, lbl="", font=g_default_font, size="AUTO" ) =
+function cmp_parms_fillet( dx, dy, dz, llx=0, lly=0, radius=g_default_fillet_radius, rot=t, vert=f, lbl="", font=g_default_font, size="AUTO" ) =
 [
     [CMP_NUM_COMPARTMENTS_XY,   [ 1, 1 ] ],
     [CMP_COMPARTMENT_SIZE_XYZ,  [ dx, dy, dz ] ],
@@ -178,7 +180,9 @@ function cmp_parms_hex_tile( llx=0, lly=0, d, dz, lbl="", font=g_default_font, s
 // lbl:          Optional parameter - Text to include on the bottom - defaults to blank
 // font:         Optional parameter - OpensSCAD font specifier - defaults to g_default_font
 // size:         Optional parameter - Size of label - defaults to AuTO
-function lid_parms(radius=5, thickness=1, lbl="", font=g_default_font, size="AUTO") =
+// swidth:       Optional parameter - Width of stripes behind label - defaults to g_default_swidth
+// sspace:       Optional parameter - Spacing of stripes behind label - defaults to g_default_sspace
+function lid_parms(radius=5, thickness=1, lbl="", font=g_default_font, size="AUTO", swidth=g_default_swidth, sspace=g_default_sspace) =
 [
     [ LID_SOLID_B, f],
     [ LID_INSET_B, t],
@@ -187,6 +191,9 @@ function lid_parms(radius=5, thickness=1, lbl="", font=g_default_font, size="AUT
 
     [ LID_PATTERN_RADIUS, radius],
     [ LID_PATTERN_THICKNESS, thickness],
+
+    [ LID_STRIPE_WIDTH, swidth],
+    [ LID_STRIPE_SPACE, sspace],
 
     [ LID_LABELS_BORDER_THICKNESS, 0.5 ],
     [ LID_LABELS_BORDER_THICKNESS, 0.5 ],
